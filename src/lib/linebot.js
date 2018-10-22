@@ -16,7 +16,7 @@ export default class Linebot {
   }
   
 
-  sendLink(id, replyToken) {
+  sendLink(id, replyToken, disasterType) {
     return new Promise((resolve, reject) => {
       let properties = {
         userId: String(id),
@@ -26,15 +26,39 @@ export default class Linebot {
       properties.language = 'en'; 
       this.bot.card(properties)
       .then((msg) => {
-       let reply = {
+	let link = msg.text + msg.link;
+	if (disasterType === "Prep") { 
+	  link = msg.text + msg.prepLink;
+	}        
+	let reply = {
          "type": "text",
-         "text": msg
+         "text": link
        };
       resolve(this.client.replyMessage(replyToken, reply));
       }).catch((err) => reject(err));
     });
   }
   
+  sendThanks(event) {
+    return new Promise((resolve, reject) => {
+      let body = event.body;
+      let replyToken = body.events[0].replyToken;
+
+      if (body.instanceRegionCode === 'null') {
+        // catch reports outside the reporting area and reply a default
+        body.instanceRegionCode = this.config.DEFAULT_INSTANCE_REGION_CODE;
+      }
+      this.bot.thanks(body)
+      .then((msg) => {
+	let link = msg.text + msg.link;        
+	let reply = {
+         "type": "text",
+         "text": link
+       };
+      resolve(this.client.replyMessage(replyToken, reply));
+      }).catch((err) => reject(err));
+    });
+  }
 
   processMessage(event){
     let body = JSON.parse(event.body);
@@ -90,8 +114,8 @@ export default class Linebot {
     this.client.replyMessage(replyToken, reply);
   }
   
-  else if (message === "Flood" || message === "flood" || message === "FLOOD") {
-     this.sendLink(id, replyToken)
+  else if (message === "Flood" || message === "Prep") {
+     this.sendLink(id, replyToken, message)
 	.catch((err) => console.log(err));
   }
 
