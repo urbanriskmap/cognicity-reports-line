@@ -29,9 +29,8 @@ This module deploys two AWS lambda functions:
 
 ### Configuration
 * `ACCESSTOKEN`: Line access token to trigger the webhook function
-* `CHANNELSECRET`: Line channel secret code created on creating a Telegram bot
+* `CHANNELSECRET`: Line channel secret code created on creating a bot
 * `API_GW_WEBHOOK`: CogniCity server endpoint to get unique report card links
-* `CARDS_API`: Array of [flood,prep] for what decks should be deployed
 * `CARDSAPIKEY`: CogniCity server API key
 * `CARDS_URL`: Client address for cards
 * `PREP_URL`: Client address for prep cards
