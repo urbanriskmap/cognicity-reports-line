@@ -4,7 +4,7 @@ const line = require('@line/bot-sdk');
 
 
 export default class Linebot {
-  
+
   constructor(config) {
     this.config = config;
     this.config.MESSAGES = require('./messages-' +
@@ -14,7 +14,7 @@ export default class Linebot {
     this.client = new line.Client(this.config);
     this.axios = axios;
   }
-  
+
 
   sendLink(id, replyToken, disasterType) {
     return new Promise((resolve, reject) => {
@@ -22,14 +22,14 @@ export default class Linebot {
         userId: String(id),
         language: this.config.DEFAULT_LANGUAGE,
         network: 'line',
-      };         
-      properties.language = 'en'; 
+      };
+      properties.language = 'en';
       this.bot.card(properties)
       .then((msg) => {
 	let link = msg.text + msg.link;
-	if (disasterType === "Prep") { 
+	if (disasterType === "Prep") {
 	  link = msg.text + msg.prepLink;
-	}        
+	}
 	let reply = {
          "type": "text",
          "text": link
@@ -38,7 +38,7 @@ export default class Linebot {
       }).catch((err) => reject(err));
     });
   }
-  
+
   sendThanks(event) {
     return new Promise((resolve, reject) => {
       let body = event.body;
@@ -50,7 +50,7 @@ export default class Linebot {
       }
       this.bot.thanks(body)
       .then((msg) => {
-	let link = msg.text + msg.link;        
+	let link = msg.text + msg.link;
 	let reply = {
          "type": "text",
          "text": link
@@ -64,16 +64,16 @@ export default class Linebot {
     let body = JSON.parse(event.body);
     let replyToken = body.events[0].replyToken;
     const message = body.events[0].message.text;
-    let id = body.events[0].source.userId;      
-    
+    let id = body.events[0].source.userId;
+
     if (message === "joined" || message === "Joined" || message === "JOINED") {
       let reply = {
-	    "type": "text", 
+	    "type": "text",
 	    "text": "Know what RiskMap can do?? Type start!!!",
-	    "quickReply": { 
+	    "quickReply": {
 	    "items": [
 	       {
-		 "type": "action", 
+		 "type": "action",
 		 "action": {
 		   "type": "message",
 		   "label": "Start",
@@ -85,15 +85,15 @@ export default class Linebot {
        };
      this.client.replyMessage(replyToken, reply);
   }
-  
+
   else if (message === "Start" || message === "start" || message === "START") {
     let reply = {
       "type": "text",
-      "text": "RiskMap bot sends you a one-time link to submit a report based on your inputs. Send 'flood' to report flood. Send 'disruption' to report infrastructure failure. In life-threatening situations contact emergency services.",
+      "text": "RiskMap bot sends you a one-time link to submit a report based on your inputs. Send 'Flood' to report flood. Send 'Prep' to report infrastructure failure. In life-threatening situations contact emergency services.",
        "quickReply": {
         "items": [
           {
-            "type": "action", 
+            "type": "action",
             "action": {
               "type": "message",
               "label": "Flood",
@@ -113,7 +113,7 @@ export default class Linebot {
     };
     this.client.replyMessage(replyToken, reply);
   }
-  
+
   else if (message === "Flood" || message === "Prep") {
      this.sendLink(id, replyToken, message)
 	.catch((err) => console.log(err));
@@ -125,7 +125,7 @@ export default class Linebot {
          "text": "Please send 'flood' to report flooding. Send 'disruption' to report infrastructure failure. In life-threatening situations contact emergency services."
       };
      this.client.replyMessage(replyToken, reply);
-  }    
+  }
 
  }
 
