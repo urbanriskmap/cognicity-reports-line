@@ -18,7 +18,7 @@ This module deploys two AWS lambda functions:
     * v8.10 or later (ES6 syntax is transpiled using Babel)
 
 ### Getting started
-* Create Telegram bot as explained [here](https://line.github.io/line-bot-sdk-nodejs/#getting-started)
+* Create Line bot as explained [here](https://line.github.io/line-bot-sdk-nodejs/#getting-started)
 * Create two AWS API gatway endpoints for the webhook and send functions
 * Add the appropriate parameters in `src/config` and `.env`.
 * Send a text to your Line bot to test if it is up and running!
