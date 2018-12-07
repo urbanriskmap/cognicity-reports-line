@@ -7,6 +7,6 @@ export default (event, context, callback) => {
   console.log('Got send request');
   console.log(event);
   const linebot = new Linebot(config);
-  linebot.sendThanks(JSON.parse(event))
+  linebot.sendThanks(event)
 };
 
