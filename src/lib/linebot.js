@@ -44,7 +44,7 @@ export default class Linebot {
 
   sendThanks(event) {
     return new Promise((resolve, reject) => {
-      let body = event.body;
+      let body = JSON.parse(event.body);
       let userId = body.userId;
 
       if (body.instanceRegionCode === 'null') {
