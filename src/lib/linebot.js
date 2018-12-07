@@ -51,6 +51,8 @@ export default class Linebot {
         // catch reports outside the reporting area and reply a default
         body.instanceRegionCode = this.config.DEFAULT_INSTANCE_REGION_CODE;
       }
+      console.log('Line sendThanks request');
+      console.log(body);
       this.bot.thanks(body)
       .then((msg) => {
 	let link = msg.text + msg.link;
