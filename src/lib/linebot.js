@@ -95,14 +95,14 @@ export default class Linebot {
   else if (message === "Start" || message === "start" || message === "START") {
     let reply = {
       "type": "text",
-      "text": "RiskMap bot sends you a one-time link to submit a report based on your inputs. Send '/Flood' to report flood. Send '/Prep' to report infrastructure failure. In life-threatening situations contact emergency services.",
+      "text": "RiskMap bot sends you a one-time link to submit a report based on your inputs. Send 'Flood' to report flood. Send 'Prep' to report infrastructure failure. In life-threatening situations contact emergency services.",
        "quickReply": {
         "items": [
           {
             "type": "action",
             "action": {
               "type": "message",
-              "label": "/Flood",
+              "label": "Flood",
               "text": "Flood"
             }
           },
@@ -110,7 +110,7 @@ export default class Linebot {
             "type": "action",
             "action": {
               "type": "message",
-              "label": "/Prep",
+              "label": "Prep",
               "text": "Prep"
             }
           }
@@ -120,7 +120,7 @@ export default class Linebot {
     this.client.replyMessage(replyToken, reply);
   }
 
-  else if (message === "/Flood" || message === "/Prep") {
+  else if (message === "Flood" || message === "flood" || message === "Prep" || message === "prep") {
      this.sendLink(id, replyToken, message)
 	.catch((err) => console.log(err));
   }
@@ -128,7 +128,7 @@ export default class Linebot {
   else {
      let reply = {
          "type": "text",
-         "text": "Please send '/Flood' to report flooding. Send '/Prep' to report infrastructure failure. In life-threatening situations contact emergency services."
+         "text": "Please send 'Flood' to report flooding. Send 'Prep' to report infrastructure failure. In life-threatening situations contact emergency services."
       };
      this.client.replyMessage(replyToken, reply);
   }
