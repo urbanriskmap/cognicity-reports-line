@@ -45,7 +45,7 @@ export default class Linebot {
   sendThanks(event) {
     return new Promise((resolve, reject) => {
       let body = event.body;
-      let replyToken = body.events[0].replyToken;
+      let userId = body.userId;
 
       if (body.instanceRegionCode === 'null') {
         // catch reports outside the reporting area and reply a default
@@ -58,7 +58,8 @@ export default class Linebot {
          "type": "text",
          "text": link
        };
-      resolve(this.client.replyMessage(replyToken, reply));
+        console.log('Sending thanks to user: ' + String(userId));
+      resolve(this.client.pushMessage(userId, reply));
       }).catch((err) => reject(err));
     });
   }
