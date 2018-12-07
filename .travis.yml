@@ -1,7 +1,7 @@
 language: node_js
 node_js: '8.10'
 
-script: npm run test && npm run coverage
+script: npm run test
 
 before_deploy:
   - npm run build
@@ -27,7 +27,7 @@ deploy:
     handler_name: "default"
     on:
       branch: dev
-  
+
   # India Prod Webhook
   - provider: lambda
     function_name: "cognicity-line-webhook-prod"
