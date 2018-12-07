@@ -17,6 +17,7 @@ export default class Linebot {
 
 
   sendLink(id, replyToken, disasterType) {
+    console.log('Sending new ' + disasterType + ' link');
     return new Promise((resolve, reject) => {
       let properties = {
         userId: String(id),
@@ -25,17 +26,19 @@ export default class Linebot {
       };
       properties.language = 'en';
       this.bot.card(properties)
-      .then((msg) => {
-	let link = msg.text + msg.link;
-	if (disasterType === "Prep") {
-	  link = msg.text + msg.prepLink;
-	}
-	let reply = {
-         "type": "text",
-         "text": link
-       };
-      resolve(this.client.replyMessage(replyToken, reply));
-      }).catch((err) => reject(err));
+        .then((msg) => {
+          console.log('Got a new card from bot');
+          console.log(msg);
+          let link = msg.text + msg.link;
+          if (disasterType === "Prep") {
+            link = msg.text + msg.prepLink;
+          }
+          let reply = {
+            "type": "text",
+            "text": link
+          };
+          resolve(this.client.replyMessage(replyToken, reply));
+        }).catch((err) => reject(err));
     });
   }
 
@@ -69,7 +72,7 @@ export default class Linebot {
     if (message === "joined" || message === "Joined" || message === "JOINED") {
       let reply = {
 	    "type": "text",
-	    "text": "Know what RiskMap can do?? Type start!!!",
+	    "text": "Know what RiskMap can do? Type start!",
 	    "quickReply": {
 	    "items": [
 	       {
@@ -122,7 +125,7 @@ export default class Linebot {
   else {
      let reply = {
          "type": "text",
-         "text": "Please send 'flood' to report flooding. Send 'disruption' to report infrastructure failure. In life-threatening situations contact emergency services."
+         "text": "Please send 'flood' to report flooding. Send 'prep' to report infrastructure failure. In life-threatening situations contact emergency services."
       };
      this.client.replyMessage(replyToken, reply);
   }
