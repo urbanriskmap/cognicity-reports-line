@@ -73,26 +73,26 @@ export default class Linebot {
     let id = body.events[0].source.userId;
 
     if (message === "joined" || message === "Joined" || message === "JOINED") {
-  //     let quickReply = {
-	//     "type": "text",
-	//     "text": "RiskMap bot sends you a one-time link to submit a report based on your inputs. Send 'Flood' to report flood. Send 'Prep' to report infrastructure failure. In life-threatening situations contact emergency services.",
-	//     "quickReply": {
-	//     "items": [
-	//        {
-	// 	 "type": "action",
-	// 	 "action": {
-	// 	   "type": "message",
-	// 	   "label": "Start",
-	// 	   "text": "Start"
-	//        }
-	//      }
-	//     ]
-	//    }
-  //   };
-  //    this.client.replyMessage(replyToken, reply);
-  // }
-  //
-  // else if (message === "Start" || message === "start" || message === "START") {
+      let reply = {
+	    "type": "text",
+	    "text": "Know what RiskMap can do? Type start!",
+	    "quickReply": {
+	    "items": [
+	       {
+		 "type": "action",
+		 "action": {
+		   "type": "message",
+		   "label": "Start",
+		   "text": "Start"
+	       }
+	     }
+	    ]
+	   }
+    };
+     this.client.replyMessage(replyToken, reply);
+  }
+
+  else if (message === "Start" || message === "start" || message === "START") {
     let reply = {
       "type": "text",
       "text": "RiskMap bot sends you a one-time link to submit a report based on your inputs. Send 'Flood' to report flood. Send 'Prep' to report infrastructure failure. In life-threatening situations contact emergency services.",
