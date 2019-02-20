@@ -37,7 +37,7 @@ deploy:
     module_name: "bin/functions/receive"
     handler_name: "default"
     on:
-      branch: master
+      branch: japan-dev
   # India Prod Reply
   - provider: lambda
     function_name: "cognicity-line-reply-prod"
@@ -47,4 +47,4 @@ deploy:
     module_name: "bin/functions/send"
     handler_name: "default"
     on:
-      branch: master
+      branch: japan-dev
