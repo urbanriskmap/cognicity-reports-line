@@ -73,8 +73,7 @@ export default class Linebot {
     let replyToken = body.events[0].replyToken;
     const message = body.events[0].message.text.toLowerCase().trim();
     let id = body.events[0].source.userId;
-    const memberJoined = body.events[0].type.toLowerCase().trim(); //a new member joines a group or a room
-    const botJoined = body.events[0].type.toLowerCase().trim(); //a new member joines a group or a room
+    const memberJoined = body.events[0].type; //a new member joines a group or a room - returns as "memberJoined"
 
     if (message === "joined") {
       let reply = {
@@ -143,33 +142,29 @@ export default class Linebot {
     }
 
     // testing -  bot is added to a group or a member joins
-    else if (memberJoined === "memberJoined" || botJoined === "shelter") {
+    else if (memberJoined === "memberJoined" || message === "shelter") {
       let reply =
-        {
-        "type": "text", // ①
-        "text": "Send me location of your shelter or slect it from the list!",
-        "quickReply": {
-        "items": [
-              {
-                "type": "action", // ③
-                "action": {
-                  "type": "location",
-                  "label": "Select location"
-                }
-              },
-              {
-                "type": "action", // ③
-                "imageUrl": "https://example.com/notes.png",
-                "action": {
-                  "type": "message",
-                  "label": "request shelter list",
-                  "text": "list"
-                }
-              }
-            ]
-          }
-        };
-  this.client.replyMessage(replyToken, reply);
+      let reply = {
+        "type": "template",
+        "altText": "shelter selction",
+        "template": {
+          "type": "buttons",
+          "actions": [
+            {
+              "type": "uri",
+              "label": "Select shelter on map",
+              "uri": "line://nv/location"
+            },
+            {
+              "type": "message",
+              "label": "Select shelter from a list",
+              "text": "shelter list"
+            }
+          ],
+          "title": "Riskmap Intro",
+          "text": "What would you like to do?"
+        }
+      };
 }
 
 // Do we want to remember the state that we were last in? (so that a typo doesn't send you back to the beginning)
