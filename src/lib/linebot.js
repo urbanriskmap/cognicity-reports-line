@@ -26,19 +26,19 @@ export default class Linebot {
       };
       properties.language = 'en';
       this.bot.card(properties)
-        .then((msg) => {
-          console.log('Got a new card from bot');
-          console.log(msg);
-          let link = msg.text + msg.link;
-          if (disasterType === "Prep") {
-            link = msg.text + msg.prepLink;
-          }
-          let reply = {
-            "type": "text",
-            "text": link
-          };
-          resolve(this.client.replyMessage(replyToken, reply));
-        }).catch((err) => reject(err));
+      .then((msg) => {
+        console.log('Got a new card from bot');
+        console.log(msg);
+        let link = msg.text + msg.link;
+        if (disasterType === "Prep") {
+          link = msg.text + msg.prepLink;
+        }
+        let reply = {
+          "type": "text",
+          "text": link
+        };
+        resolve(this.client.replyMessage(replyToken, reply));
+      }).catch((err) => reject(err));
     });
   }
 
@@ -55,14 +55,14 @@ export default class Linebot {
       console.log(body);
       this.bot.thanks(body)
       .then((msg) => {
-	let link = msg.text + msg.link;
-	let reply = {
-         "type": "text",
-         "text": link
-       };
+        let link = msg.text + msg.link;
+        let reply = {
+          "type": "text",
+          "text": link
+        };
         console.log('Sending thanks to user: ' + String(userId));
-      resolve(this.client.pushMessage(userId, reply));
-      // Christina: Maybe we can also re-send the intro prompt here
+        resolve(this.client.pushMessage(userId, reply));
+        // Christina: Maybe we can also re-send the intro prompt here
       }).catch((err) => reject(err));
     });
   }
@@ -76,162 +76,132 @@ export default class Linebot {
 
     if (message === "joined") {
       let reply = {
-	    "type": "text",
-	    "text": "Know what RiskMap can do? Type start!",
-	    "quickReply": {
-	    "items": [
-	       {
-		 "type": "action",
-		 "action": {
-		   "type": "message",
-		   "label": "Start",
-		   "text": "Start"
-	       }
-	     }
-	    ]
-	   }
-    };
-     this.client.replyMessage(replyToken, reply);
-  }
-
-  else if (message === "shelter") {
-    let reply = {
-      "type": "text",
-      "text": "Please send us your shelter location",
-       "quickReply": {
-        "items": [
-          {
-        "type": "action", // replacing earlier quick reply for reporting with location quick replay for shelter selection
-        "action": {
-          "type": "location",
-          "label": "Send location"
-        }
-      }
-        ]
-      }
-    };
-    this.client.replyMessage(replyToken, reply);
-  }
-
-  else if (message === "flood" || message === "prep") {
-     this.sendLink(id, replyToken, message)
-	.catch((err) => console.log(err));
-  }
-
-
-  else if (message === "report") {
-    let m = [
-      {
-        "type":"text",
-        "text":"What would you like to report?"
-      },
-      {
-        "type": "template",
-        "altText": "report carousel",
-        "template": {
-          "type": "carousel",
-          "actions": [],
-          "columns": [
+        "type": "text",
+        "text": "Know what RiskMap can do? Type start!",
+        "quickReply": {
+          "items": [
             {
-              "text": "Flood",
-              "actions": [
-                {
-                  "type": "message",
-                  "label": "Select",
-                  "text": "flood"
-                }
-              ]
-            },
-            {
-              "text": "Infrastructure Failure",
-              "actions": [
-                {
-                  "type": "message",
-                  "label": "Select",
-                  "text": "prep"
-                }
-              ]
-            },
-          ]
-        }
-      },
-    ];
-    this.client.replyMessage(replyToken, m);
-
-  }
-
-// testing -  bot is added to a group or a member joins
-  else if (message === "memberJoined" || message === "join") {
-    let m = [
-      {
-        "type":"text",
-        "text":"Thank you for interacting with Riskmap Bot, Please let me know the name of the shelter you are assigned to"
-      },
-      {
-        "type": "template",
-        "altText": "report carousel",
-        "template": {
-          "type": "carousel",
-          "actions": [],
-          "columns": [
-            {
-              "text": "Use map",
-              "actions": [
-                {
-                  "type": "uri",
-                  "label": "Select",
-                  "uri": "https://riskmap.in/"
-                }
-              ]
-            },
-            {
-              "text": "request shelter list",
-              "actions": [
-                {
-                  "type": "message",
-                  "label": "Select",
-                  "text": "list"
-                }
-              ]
+              "type": "action",
+              "action": {
+                "type": "message",
+                "label": "Start",
+                "text": "Start"
+              }
             }
           ]
         }
-      },
-    ];
-    this.client.replyMessage(replyToken, m);
-  }
+      };
+      this.client.replyMessage(replyToken, reply);
+    }
 
-  // Do we want to remember the state that we were last in? (so that a typo doesn't send you back to the beginning)
-  // Or we can just have the chatbot not respond
-  else {
-     // let reply = {
-     //     "type": "text",
-     //     "text": "Please send 'Flood' to report flooding. Send 'Prep' to report infrastructure failure. In life-threatening situations contact emergency services."
-     //  };
-    let reply = {
-      "type": "template",
-      "altText": "Riskmap Default Message",
-      "template": {
-        "type": "buttons",
-        "actions": [
+    else if (message === "flood" || message === "prep") {
+      this.sendLink(id, replyToken, message)
+      .catch((err) => console.log(err));
+    }
+
+
+    else if (message === "report") {
+      let m = [
+        {
+          "type":"text",
+          "text":"What would you like to report?"
+        },
+        {
+          "type": "template",
+          "altText": "report carousel",
+          "template": {
+            "type": "carousel",
+            "actions": [],
+            "columns": [
+              {
+                "text": "Flood",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "Select",
+                    "text": "flood"
+                  }
+                ]
+              },
+              {
+                "text": "Infrastructure Failure",
+                "actions": [
+                  {
+                    "type": "message",
+                    "label": "Select",
+                    "text": "prep"
+                  }
+                ]
+              },
+            ]
+          }
+        },
+      ];
+      this.client.replyMessage(replyToken, m);
+    }
+
+    // testing -  bot is added to a group or a member joins
+    else if (message === "join") {
+      let m = [
+        {
+          "type":"text",
+          "text":"Thank you for interacting with Riskmap Bot, Please let me know the name of the shelter you are assigned to"
+        },
+        "items": [
           {
-            "type": "uri",
-            "label": "View Map",
-            "uri": "https://riskmap.in/"
+            "type": "action", // ③
+            "action": {
+              "type": "location",
+              "label": "Select location"
+            }
           },
           {
-            "type": "message",
-            "label": "Send Report",
-            "text": "report"
+            "type": "action", // ③
+            "imageUrl": "https://example.com/notes.png",
+            "action": {
+              "type": "message",
+              "label": "request shelter list",
+              "text": "list"
+            }
           }
-        ],
-        "title": "Riskmap Intro",
-        "text": "What would you like to do?"
+        ]
       }
-    };
-   this.client.replyMessage(replyToken, reply);
-  }
+    ],
+  ];
+  this.client.replyMessage(replyToken, m);
+}
 
- }
+// Do we want to remember the state that we were last in? (so that a typo doesn't send you back to the beginning)
+// Or we can just have the chatbot not respond
+else {
+  // let reply = {
+  //     "type": "text",
+  //     "text": "Please send 'Flood' to report flooding. Send 'Prep' to report infrastructure failure. In life-threatening situations contact emergency services."
+  //  };
+  let reply = {
+    "type": "template",
+    "altText": "Riskmap Default Message",
+    "template": {
+      "type": "buttons",
+      "actions": [
+        {
+          "type": "uri",
+          "label": "View Map",
+          "uri": "https://riskmap.in/"
+        },
+        {
+          "type": "message",
+          "label": "Send Report",
+          "text": "report"
+        }
+      ],
+      "title": "Riskmap Intro",
+      "text": "What would you like to do?"
+    }
+  };
+  this.client.replyMessage(replyToken, reply);
+}
+
+}
 
 }
