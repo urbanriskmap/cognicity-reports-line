@@ -73,7 +73,7 @@ export default class Linebot {
     let replyToken = body.events[0].replyToken;
     const message = body.events[0].message.text.toLowerCase().trim();
     let id = body.events[0].source.userId;
-    let group = body.events[0].source.type; //joined a group or a room
+    const group = body.events[0].type.toLowerCase().trim(); //joined a group or a room
 
     if (message === "joined") {
       let reply = {
