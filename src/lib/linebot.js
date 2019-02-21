@@ -94,28 +94,19 @@ export default class Linebot {
      this.client.replyMessage(replyToken, reply);
   }
 
-  else if (message === "start") {
+  else if (message === "shelter") {
     let reply = {
       "type": "text",
-      "text": "RiskMap bot sends you a one-time link to submit a report based on your inputs. Send 'Flood' to report flood. Send 'Prep' to report infrastructure failure. In life-threatening situations contact emergency services.",
+      "text": "Please send us your shelter location",
        "quickReply": {
         "items": [
           {
-            "type": "action",
-            "action": {
-              "type": "message",
-              "label": "Flood",
-              "text": "Flood"
-            }
-          },
-          {
-            "type": "action",
-            "action": {
-              "type": "message",
-              "label": "Prep",
-              "text": "Prep"
-            }
-          }
+        "type": "action", // replacing earlier quick reply for reporting with location quick replay for shelter selection
+        "action": {
+          "type": "location",
+          "label": "Send location"
+        }
+      }
         ]
       }
     };
