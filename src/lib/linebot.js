@@ -118,7 +118,7 @@ export default class Linebot {
 	.catch((err) => console.log(err));
   }
 
-  
+
   else if (message === "report") {
     let m = [
       {
@@ -158,6 +158,47 @@ export default class Linebot {
     ];
     this.client.replyMessage(replyToken, m);
 
+  }
+
+// testing -  bot is added to a group or a member joins
+  else if (message === "memberJoined" || message === "join") {
+    let m = [
+      {
+        "type":"text",
+        "text":"Thank you for interacting with Riskmap Bot, Please let me know the name of the shelter you are assigned to"
+      },
+      {
+        "type": "template",
+        "altText": "report carousel",
+        "template": {
+          "type": "carousel",
+          "actions": [],
+          "columns": [
+            {
+              "text": "Use map",
+              "actions": [
+                {
+                  "type": "uri",
+                  "label": "Select",
+                  "uri": "https://riskmap.in/"
+                }
+              ]
+            },
+            {
+              "text": "request shelter list",
+              "actions": [
+                {
+                  "type": "message",
+                  "label": "Select",
+                  "text": "list"
+                }
+              ]
+            }
+          ]
+        }
+      },
+    ];
+    this.client.replyMessage(replyToken, m);
   }
 
   // Do we want to remember the state that we were last in? (so that a typo doesn't send you back to the beginning)
