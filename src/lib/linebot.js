@@ -160,10 +160,11 @@ export default class Linebot {
               "text": "shelter list"
             }
           ],
-          "title": "Riskmap Intro",
-          "text": "What would you like to do?"
+          "title": "Shelter selection",
+          "text": "Please select your shelter"
         }
       };
+      this.client.replyMessage(replyToken, reply);
 }
 
 // Do we want to remember the state that we were last in? (so that a typo doesn't send you back to the beginning)
