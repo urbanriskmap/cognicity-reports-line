@@ -73,7 +73,8 @@ export default class Linebot {
     let replyToken = body.events[0].replyToken;
     const message = body.events[0].message.text.toLowerCase().trim();
     let id = body.events[0].source.userId;
-    let group = body.events[0].source.type; //joined a group or a room
+    const memberJoined = body.events[0].type.toLowerCase().trim(); //a new member joines a group or a room
+    const botJoined = body.events[0].type.toLowerCase().trim(); //a new member joines a group or a room
 
     if (message === "joined") {
       let reply = {
@@ -142,7 +143,7 @@ export default class Linebot {
     }
 
     // testing -  bot is added to a group or a member joins
-    else if (group === "join" || message === "shelter") {
+    else if (memberJoined === "memberJoined" || botJoined === "shelter") {
       let reply =
         {
         "type": "text", // ①
