@@ -143,7 +143,6 @@ export default class Linebot {
 
     // testing -  bot is added to a group or a member joins
     else if (memberJoined === "memberJoined" || message === "shelter") {
-      let reply =
       let reply = {
         "type": "template",
         "altText": "shelter selction",
