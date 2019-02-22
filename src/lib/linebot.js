@@ -67,13 +67,51 @@ export default class Linebot {
     });
   }
 
+  // Handle non-message events
+  handleEvent(event) {
+    let body = JSON.parse(event.body);
+    let replyToken = body.events[0].replyToken;
+    let eventType = body.events[0].type;
+    var reply = {};
+
+    if (eventType === "memberJoined" || eventType === "join") {
+      reply = {
+        "type": "template",
+        "altText": "shelter selection",
+        "template": {
+          "type": "buttons",
+          "actions": [
+            {
+              "type": "uri",
+              "label": "Select shelter on map",
+              "uri": "line://nv/location"
+            },
+            {
+              "type": "message",
+              "label": "Select shelter from a list",
+              "text": "shelter list"
+            }
+          ],
+          "title": "Shelter Selection",
+          "text": "Please select your shelter"
+        }
+      };
+    } else {
+        reply = {
+          "type":"text",
+          "text":`Oops! No handler found for event type ${eventType}`
+        };
+    }
+    this.client.replyMessage(replyToken, reply);
+  }
+
   // Primitive responder to certain messages
   processMessage(event){
     let body = JSON.parse(event.body);
     let replyToken = body.events[0].replyToken;
     const message = body.events[0].message.text.toLowerCase().trim();
     let id = body.events[0].source.userId;
-    const memberJoined = body.events[0].type; //a new member joines a group or a room - returns as "memberJoined"
+    // const memberJoined = body.events[0].type; //a new member joines a group or a room - returns as "memberJoined"
 
     if (message === "joined") {
       let reply = {
@@ -142,10 +180,10 @@ export default class Linebot {
     }
 
     // testing -  bot is added to a group or a member joins
-    else if (memberJoined === "memberJoined" || message === "shelter") {
+    else if (message === "shelter") {
       let reply = {
         "type": "template",
-        "altText": "shelter selction",
+        "altText": "shelter selection",
         "template": {
           "type": "buttons",
           "actions": [
@@ -160,44 +198,44 @@ export default class Linebot {
               "text": "shelter list"
             }
           ],
-          "title": "Shelter selection",
+          "title": "Shelter Selection",
           "text": "Please select your shelter"
         }
       };
       this.client.replyMessage(replyToken, reply);
-}
+    }
 
 // Do we want to remember the state that we were last in? (so that a typo doesn't send you back to the beginning)
 // Or we can just have the chatbot not respond
-else {
-  // let reply = {
-  //     "type": "text",
-  //     "text": "Please send 'Flood' to report flooding. Send 'Prep' to report infrastructure failure. In life-threatening situations contact emergency services."
-  //  };
-  let reply = {
-    "type": "template",
-    "altText": "Riskmap Default Message",
-    "template": {
-      "type": "buttons",
-      "actions": [
-        {
-          "type": "uri",
-          "label": "View Map",
-          "uri": "https://riskmap.in/"
-        },
-        {
-          "type": "message",
-          "label": "Send Report",
-          "text": "report"
+    else {
+      // let reply = {
+      //     "type": "text",
+      //     "text": "Please send 'Flood' to report flooding. Send 'Prep' to report infrastructure failure. In life-threatening situations contact emergency services."
+      //  };
+      let reply = {
+        "type": "template",
+        "altText": "Riskmap Default Message",
+        "template": {
+          "type": "buttons",
+          "actions": [
+            {
+              "type": "uri",
+              "label": "View Map",
+              "uri": "https://riskmap.in/"
+            },
+            {
+              "type": "message",
+              "label": "Send Report",
+              "text": "report"
+            }
+          ],
+          "title": "Riskmap Intro",
+          "text": "What would you like to do?"
         }
-      ],
-      "title": "Riskmap Intro",
-      "text": "What would you like to do?"
+      };
+      this.client.replyMessage(replyToken, reply);
     }
-  };
-  this.client.replyMessage(replyToken, reply);
-}
 
-}
+  }
 
 }

@@ -11,8 +11,14 @@ export default (event, context, callback) => {
  
  if (signature === checkHeader) {
    console.log('Processing webhook message');
-   const linebot = new Linebot(config);  
-       linebot.processMessage(event)
+   const linebot = new Linebot(config);
+   let eventType = JSON.parse(event.body).events[0].type;
+   if (eventType === "message") {
+     linebot.processMessage(event);
+   } else {
+   	 linebot.handleEvent(event);
+   }
+   
  }else{
    console.log('Error, signature does not match header');
    console.log(event);
