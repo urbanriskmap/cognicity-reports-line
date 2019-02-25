@@ -83,17 +83,17 @@ export default class Linebot {
           "actions": [
             {
               "type": "uri",
-              "label": "Select shelter on map",
+              "label": "Select on map",
               "uri": "line://nv/location"
             },
             {
               "type": "message",
-              "label": "Select shelter from a list",
+              "label": "Select from list",
               "text": "shelter list"
             }
           ],
           "title": "Shelter Selection",
-          "text": "Please select your shelter"
+          "text": "Please select your shelter."
         }
       };
     } else {
@@ -181,28 +181,55 @@ export default class Linebot {
 
     // testing -  bot is added to a group or a member joins
     else if (message === "shelter") {
-      let reply = {
-        "type": "template",
-        "altText": "shelter selection",
-        "template": {
-          "type": "buttons",
-          "actions": [
-            {
-              "type": "uri",
-              "label": "Select shelter on map",
-              "uri": "line://nv/location"
-            },
-            {
-              "type": "message",
-              "label": "Select shelter from a list",
-              "text": "shelter list"
-            }
-          ],
-          "title": "Shelter Selection",
-          "text": "Please select your shelter"
+      let m = [
+        {
+          "type":"text",
+          "text":"What is your shelter?"
+        },
+        {
+          "type": "template",
+          "altText": "shelter selection",
+          "template": {
+            "type": "buttons",
+            "actions": [
+              {
+                "type": "uri",
+                "label": "Map",
+                "uri": "line://nv/location"
+              },
+              {
+                "type": "message",
+                "label": "List",
+                "text": "list"
+              }
+            ],
+            "text": "Choose a selection method."
+          }
         }
-      };
-      this.client.replyMessage(replyToken, reply);
+      ];
+
+      // let reply = {
+      //   "type": "template",
+      //   "altText": "shelter selection",
+      //   "template": {
+      //     "type": "buttons",
+      //     "actions": [
+      //       {
+      //         "type": "uri",
+      //         "label": "Map",
+      //         "uri": "line://nv/location"
+      //       },
+      //       {
+      //         "type": "message",
+      //         "label": "List",
+      //         "text": "list"
+      //       }
+      //     ],
+      //     "title": "Shelter Selection",
+      //     "text": "What is your shelter? Choose a selection method."
+      //   }
+      // };
+      this.client.replyMessage(replyToken, m);
     }
 
 // Do we want to remember the state that we were last in? (so that a typo doesn't send you back to the beginning)
